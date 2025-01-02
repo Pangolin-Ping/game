@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:software_project/Constant.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -14,17 +15,23 @@ class ChatRecordProvider extends ChangeNotifier{
   String uuid = "";
   List<types.Message> chatRecord = [];
   int count = 0;
+  bool state = true;
 
-  void initConnect()async{
+  void initConnect(String username)async{
+    state = false;
+    notifyListeners();
     chatRecord = [];
-    var response = await Dio().get('http://${Constant.ip}:7999/getAllMessage');
+    var response = await Dio().get('${Constant.ip}getAllMessage');
     var allMsg = jsonDecode(response.data)["messages"];
     print(allMsg);
     insertAllMsg(allMsg);
-
-
-    socket = WebSocketChannel.connect(Uri.parse("ws://${Constant.ip}:7999/ws"));
-    
+    print('ws${Constant.ip.substring(5)}ws?username=$username');
+    try{
+      socket.sink.close();
+    }catch(e){
+      print(e);
+    }
+    socket = WebSocketChannel.connect(Uri.parse("ws${Constant.ip.substring(5)}ws?username=$username"));
     socket.stream.listen((data){
       try{
         final msg = jsonDecode(data);
@@ -39,7 +46,15 @@ class ChatRecordProvider extends ChangeNotifier{
       }catch(e){
         print(e);
       }
-    });
+    },
+    onDone: (){
+      print("daskndoasnfsndogsjodvnoszvjozsovnsizovnosnvosjbnpobnobno");
+    }
+    
+    );
+    state = true;
+    notifyListeners();
+
   }
 
   void insertAllMsg(dynamic msg){

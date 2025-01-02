@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:software_project/Constant.dart';
 import 'package:software_project/provider/AccountInfoProvider.dart';
 import 'package:software_project/provider/GameInfoProvider.dart';
+import 'package:software_project/provider/RankingProvider.dart';
 
 class RankingPage extends StatefulWidget{
   const RankingPage({super.key});
@@ -21,8 +23,8 @@ class _RankingPage extends State<RankingPage>{
   @override 
   Widget build(BuildContext context){
     SystemChrome.setPreferredOrientations([ DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return Consumer2<GameInfoProvider,AccountInfoProvider>(
-      builder: (context, gameInfoProvider, accountInfoProvider, child) =>
+    return Consumer3<GameInfoProvider,AccountInfoProvider,RankingProvider>(
+      builder: (context, gameInfoProvider, accountInfoProvider, rankingProvider, child) =>
       Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -30,10 +32,11 @@ class _RankingPage extends State<RankingPage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
+                flex: 5,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    for(int i = 1; i <= 3; i++)
+                    for(int i = 0; i < rankingProvider.l1; i++)
                       Container(
                         height: 80,
                         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -56,21 +59,35 @@ class _RankingPage extends State<RankingPage>{
                                   color: Colors.black
                                 )
                               ),
-                              child: Image.asset('images/manIcon.png'),
+                              child: Image.network((rankingProvider.ranking[i].third == 0)? Constant.manIconUrl:Constant.womanIconUrl, height: 70,width: 70,),
                             ),
                             Text(
-                              accountInfoProvider.username ,
+                              rankingProvider.ranking[i].first ,
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
-                              '$i' ,
+                              rankingProvider.ranking[i].second.toString() ,
                               style: TextStyle(
-                                fontSize: 40,
+                                fontSize: 25,
                                 fontWeight: FontWeight.w700,
                               ),
+                            ),
+                            ( i != 0)?
+                            Text(
+                              '${i+1}' ,
+                              style: TextStyle(
+                                fontSize: 45,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.amber,
+                              ),
+                            ):
+                            Icon(
+                              Icons.workspace_premium_rounded,
+                              color: Colors.amber,
+                              size: 40,
                             ),
                           ],
                         ),
@@ -79,9 +96,10 @@ class _RankingPage extends State<RankingPage>{
                 ),
               ),
               Flexible(
+                flex: 8,
                 child: ListView(
                   children: [
-                    for(int i = 1; i <= 10; i++)
+                    for(int i = 3; i < rankingProvider.l2; i++)
                       Container(
                         height: 80,
                         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
@@ -104,17 +122,24 @@ class _RankingPage extends State<RankingPage>{
                                   color: Colors.black
                                 )
                               ),
-                              child: Image.asset('images/manIcon.png'),
+                              child: Image.network((rankingProvider.ranking[i].third == 0)? Constant.manIconUrl:Constant.womanIconUrl, height: 60,width: 60,),
                             ),
                             Text(
-                              accountInfoProvider.username ,
+                              rankingProvider.ranking[i].first ,
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Text(
-                              '$i' ,
+                              rankingProvider.ranking[i].second.toString() ,
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Text(
+                              '${i+1}' ,
                               style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.w700,

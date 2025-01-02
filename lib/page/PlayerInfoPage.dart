@@ -20,7 +20,6 @@ class _PlayerInfoPage extends State<PlayerInfoPage>{
   @override 
   void initState() { 
     super.initState(); 
-    print('goINfo');
   }
   
   @override
@@ -34,55 +33,29 @@ class _PlayerInfoPage extends State<PlayerInfoPage>{
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
           automaticallyImplyLeading: false,
+          
+          title: Center( child: Text('球員資訊', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),)),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(gameInfoProvider.gameInfo[index]['home_team_icon'], height: 100, width: 100),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 110,
-                        child: Text(
-                          gameInfoProvider.gameInfo[index]['home_team_name'],
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ),
-                Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(gameInfoProvider.gameInfo[index]['away_team_icon'], height: 100, width: 100),
-                      Container(
-                        alignment: Alignment.center,
-                        height: 110,
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          gameInfoProvider.gameInfo[index]['away_team_name'],
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Flexible(
+                    child: Center(
+                      child: Image.network(gameInfoProvider.gameInfo[index]['home_team_icon'], height: 70, width: 70),
+                    ),
+                  ),
+                  Flexible(
+                    child: Center(
+                      child: Image.network(gameInfoProvider.gameInfo[index]['away_team_icon'], height: 80, width: 80),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: ListView(
@@ -92,158 +65,191 @@ class _PlayerInfoPage extends State<PlayerInfoPage>{
                     children: [
                       Flexible(
                         child: (i < gameInfoProvider.homePlayerInfo.length)?
-                        Container(
-                          height: 110,
-                          padding: EdgeInsets.all(15),
-                          child: Row(
-                            children: [
-                              Flexible(
-                                flex: 1,
-                                child: GestureDetector(
-                                  child: Image.network(
-                                    Uri.encodeFull(gameInfoProvider.homePlayerInfo[i]['icon']),
-                                    width: 100, 
-                                    height: 100,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) { return Image.network('https://www.cpbl.com.tw/theme/client/images/player_no_img.jpg', width: 100, height: 100); },
-                                  ),
-                                  onTap: (){
-                                    gameInfoProvider.getSinglePlayerInfo(context, index,gameInfoProvider.homePlayerInfo[i] , true);
-                                  },
-                                  
-                                )
-                              ),
-                              Flexible(
-                                flex: 4,
-                                child: Container(
-                                  height: 110,
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      width: 2,
-                                      color: Colors.black,
+                        Center(
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: GestureDetector(
+                                      child: Image.network(
+                                        Uri.encodeFull(gameInfoProvider.homePlayerInfo[i]['icon']),
+                                        width: 50, 
+                                        height: 50,
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) { return Image.network('https://www.cpbl.com.tw/theme/client/images/player_no_img.jpg', width: 100, height: 100); },
+                                      ),
+                                      onTap: (){
+                                        gameInfoProvider.getSinglePlayerInfo(context, index,gameInfoProvider.homePlayerInfo[i] , true);
+                                      },
+                                    ),
+                                  )
+                                ),
+                                Flexible(
+                                  flex: 3,
+                                  child: Container(
+                                    height: 50,
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        width: 2,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Flexible(
+                                          child: Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.homePlayerInfo[i]['name'].toString(),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(child: 
+                                          Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.homePlayerInfo[i]['position'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(child:
+                                          Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.homePlayerInfo[i]['number'].toString(),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.homePlayerInfo[i]['name'],
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.homePlayerInfo[i]['position'],
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.homePlayerInfo[i]['number'].toString(),
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ):
                         Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(3),
                           child: SizedBox(
-                            height: 110,
+                            height: 50,
                           ),
                         ),
                       ),
                       Flexible(
                         child: (i < gameInfoProvider.awayPlayerInfo.length)?
-                        Container(
-                          height: 110,
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            children: [
-                              Flexible(
-                                flex: 4,
-                                child: Container(
-                                  height: 110,
-                                  padding: EdgeInsets.symmetric(vertical: 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      width: 2,
-                                      color: Colors.black,
+                        Center(
+                          child: Container(
+                            height: 50,
+                            padding: EdgeInsets.symmetric(vertical: 2),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  flex: 3,
+                                  child: Container(
+                                    height: 50,
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        width: 2,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Flexible(
+                                          child: Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.awayPlayerInfo[i]['number'].toString(),
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ), 
+                                        ),
+                                        Flexible(
+                                          child: Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.awayPlayerInfo[i]['position'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Center(
+                                            child: Text(
+                                              textAlign: TextAlign.center,
+                                              gameInfoProvider.awayPlayerInfo[i]['name'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.awayPlayerInfo[i]['number'].toString(),
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
+                                ),
+                                Flexible(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    child: GestureDetector(
+                                      child: Image.network(
+                                        Uri.encodeFull(gameInfoProvider.awayPlayerInfo[i]['icon']),
+                                        width: 50,
+                                        height: 50,
+                                        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) { 
+                                          return Image.network('https://www.cpbl.com.tw/theme/client/images/player_no_img.jpg', width: 50, height: 50);
+                                        },
                                       ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.awayPlayerInfo[i]['position'],
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
-                                      ),
-                                      Text(
-                                        textAlign: TextAlign.center,
-                                        gameInfoProvider.awayPlayerInfo[i]['name'],
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w200,
-                                        ),
-                                      ),
-                                    ],
+                                      onTap: (){
+                                        gameInfoProvider.getSinglePlayerInfo(context, index,gameInfoProvider.awayPlayerInfo[i] , false);
+                                      },
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: GestureDetector(
-                                  child: Image.network(
-                                    Uri.encodeFull(gameInfoProvider.awayPlayerInfo[i]['icon']),
-                                    width: 100,
-                                    height: 100,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) { 
-                                      return Image.network('https://www.cpbl.com.tw/theme/client/images/player_no_img.jpg', width: 100, height: 100);
-                                    },
-                                  ),
-                                  onTap: (){
-                                    gameInfoProvider.getSinglePlayerInfo(context, index,gameInfoProvider.awayPlayerInfo[i] , false);
-                                  },
-                                )
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ):
                         Padding(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(3),
                           child: SizedBox(
-                            height: 110,
+                            height: 50,
                           ),
                         ),
                       ),

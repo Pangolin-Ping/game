@@ -21,17 +21,18 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPage extends State<LoginPage>{
+  
+  bool state = true;
+
 
   @override
   Widget build(BuildContext context){
     SystemChrome.setPreferredOrientations([ DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     final accountController = TextEditingController();
     final passwordController = TextEditingController();
-    accountController.text = '123';
-    passwordController.text = '123';
     return Consumer3<AccountInfoProvider, ChatRecordProvider, GameInfoProvider>(
       builder: ( context, accountInfoProvider, chatRecordProvider, gameInfoProvider, child) =>
-      Scaffold(
+       Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -153,27 +154,47 @@ class _LoginPage extends State<LoginPage>{
                     height: 40,
                     width: 160,
                     child: TextButton(
-                      onPressed: () async{
+                      onPressed:(state == false)? null:() async{
+                        setState(() {
+                          state = false;
+                        });
                         var param = {
                           'username' : accountController.text,
                           'password' : passwordController.text,
                         };
                         try{
-                          // await gameInfoProvider.readPlayerJson();
-                          await gameInfoProvider.getGameinfo();
                           await accountInfoProvider.login(context,param);
+                          await gameInfoProvider.getGameinfo();
                         }
                         on DioException catch(e){
+                          setState(() {
+                            state = true;
+                          });
                           if (e.response?.statusCode == 404) { 
                             Warning.showAccountErrorWarning(context);
                             return;
                           } 
                           else { 
+                            showDialog(
+                              context: context, 
+                                builder: (BuildContext context){
+                                  return AlertDialog(
+                                    content: Text('$e'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  );
+                                },
+                              );
                             print('Error: ${e.response?.statusCode}'); 
+                            setState(() {
+                              state = true;
+                            });
                           }
                           return;
                         }
-                        chatRecordProvider.initConnect();
+                        state = true;
+                        chatRecordProvider.initConnect(accountInfoProvider.username);
                         Navigator.pushNamed(context, '/home');
                       },
                       child: Text(
@@ -184,12 +205,14 @@ class _LoginPage extends State<LoginPage>{
                           fontSize: 18,
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
+                      style: TextButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
+                        disabledBackgroundColor: Colors.grey,
+                        disabledForegroundColor: Colors.white
                       ),
                     ),
                   ),

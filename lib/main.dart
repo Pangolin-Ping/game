@@ -12,6 +12,7 @@ import 'package:software_project/provider/AccountInfoProvider.dart';
 import 'package:software_project/page/LoginPage.dart';
 import 'package:software_project/provider/ChatRecordProvider.dart';
 import 'package:software_project/provider/GameInfoProvider.dart';
+import 'package:software_project/provider/RankingProvider.dart';
 
 void main(){
   runApp(const MyApp());
@@ -29,10 +30,11 @@ class MyApp extends StatelessWidget{
         ChangeNotifierProvider(create: (context)=> AccountInfoProvider()),
         ChangeNotifierProvider(create: (context)=> ChatRecordProvider()),
         ChangeNotifierProvider(create: (context)=> GameInfoProvider()),
+        ChangeNotifierProvider(create: (context)=> RankingProvider()),
       ],
       child: MaterialApp(
         darkTheme: ThemeData(
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
         ),
         title: 'chatroom',
         theme: ThemeData(

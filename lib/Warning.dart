@@ -19,7 +19,7 @@ class Warning{
                   size: 30,
                 ),
                 Text(
-                  '使用者名稱已被使用!',
+                  '使用者名稱\n已被使用!',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w400,
@@ -31,7 +31,7 @@ class Warning{
             actions: [
               Container(
                 width: 70,
-                height: 30,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(3),
@@ -84,7 +84,7 @@ class Warning{
             actions: [
               Container(
                 width: 70,
-                height: 30,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(3),
@@ -137,7 +137,7 @@ class Warning{
             actions: [
               Container(
                 width: 70,
-                height: 30,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(3),
@@ -190,7 +190,7 @@ class Warning{
             actions: [
               Container(
                 width: 70,
-                height: 30,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(3),

@@ -30,6 +30,7 @@ class _RegisterPage extends State<RegisterPage>{
     final passwordController = TextEditingController();
     final comfirmwordController = TextEditingController();
     int groupValue = 2;
+    bool state = true;
 
 
     return Consumer3<AccountInfoProvider, ChatRecordProvider, GameInfoProvider>(
@@ -183,9 +184,15 @@ class _RegisterPage extends State<RegisterPage>{
                 height: 40,
                 width: 250,
                 child: TextButton(
-                  onPressed: () async{
+                  onPressed:(state == false) ? null:() async{
+                    setState(() {
+                      state = false;
+                    });
                     if(passwordController.text != comfirmwordController.text) {
                       Warning.showPasswordComfirmWarning(context);
+                      setState(() {
+                      state = true;
+                    });
                       return;
                     }
                     var param = {
@@ -194,18 +201,35 @@ class _RegisterPage extends State<RegisterPage>{
                       'password' : passwordController.text,
                     };
                     try{
-                      var response = await Dio().post('http://${Constant.ip}:7999/register', data: param);
+                      var response = await Dio().post('${Constant.ip}register', data: param);
                       print(response.data['username']);
                       print('completed');
                     }
                     on DioException catch (e) { 
                       if (e.response?.statusCode == 500) { 
                         Warning.showAccountExistWarning(context);
+                        setState(() {
+                          state = true;
+                        });
                         return;
                       } 
                       else { 
+                        showDialog(
+                        context: context, 
+                          builder: (BuildContext context){
+                            return AlertDialog(
+                              content: Text('$e'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            );
+                          },
+                        );
                         print('Error: ${e.response?.statusCode}'); 
                       }
+                      setState(() {
+                          state = true;
+                      });
                       return;
                     }
                     Warning.showRegisterSuccessfulWarning(context);
